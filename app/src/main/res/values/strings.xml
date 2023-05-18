@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AppTask</string>
+    <string name="title">Title example</string>
+    <string name="description">This is an example of the description!</string>
+
+</resources>
