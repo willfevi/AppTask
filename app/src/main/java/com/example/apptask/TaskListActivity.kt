@@ -3,7 +3,6 @@ package com.example.apptask
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -25,7 +24,7 @@ class TaskListActivity : AppCompatActivity() {
         Task(3,"Título 4", "Descrição 4")
     )
     private lateinit var conteiner : LinearLayout
-    private val adapter: TaskListAdapter = TaskListAdapter(::openTaskDetailView)
+    private val adapter: TaskListAdapter = TaskListAdapter(::onListItemClicked)
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -34,20 +33,53 @@ class TaskListActivity : AppCompatActivity() {
             val data = result.data
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
             val task: Task = taskAction.task
-            val newList= arrayListOf<Task>()
-                .apply {
-                    addAll(taskList)
+
+            if (taskAction.actionType==ActionType.DELETE.name){
+
+                val newList= arrayListOf<Task>()
+                    .apply {
+                        addAll(taskList)
+                    }
+
+
+                newList.remove(task)
+                showMessage(conteiner,"Item ${task.title} deletado!")
+
+                if(newList.size==0){
+                    conteiner.visibility=View.VISIBLE
+                }
+                adapter.submitList(newList)
+                taskList=newList
+
+            }else if (taskAction.actionType==ActionType.CREATE.name) {
+
+                val newList = arrayListOf<Task>()
+                    .apply {
+                        addAll(taskList)
+                    }
+
+                newList.add(task)
+                showMessage(conteiner, "Item ${task.title} adicionado!")
+
+                adapter.submitList(newList)
+                taskList = newList
+            }else if (taskAction.actionType==ActionType.UPDATE.name){
+
+                val emptyList=arrayListOf<Task>()
+                taskList.forEach {
+                    if (it.id==task.id){
+                        val newItem=Task(it.id,task.title,task.description)
+                        emptyList.add(newItem)
+                    }else{
+                        emptyList.add(it)
+                    }
+                }
+                showMessage(conteiner, "Item ${task.title} atualizado!")
+
+                adapter.submitList(emptyList)
+                taskList =emptyList
+
             }
-
-
-            newList.remove(task)
-            showMessage(conteiner,"Item ${task.title} deletado!")
-
-            if(newList.size==0){
-                conteiner.visibility=View.VISIBLE
-            }
-            adapter.submitList(newList)
-            taskList=newList
         }
     }
     fun showMessage(view: View,message: String){
@@ -70,7 +102,7 @@ class TaskListActivity : AppCompatActivity() {
 
         val fab= findViewById<FloatingActionButton>(R.id.fabadd)
         fab.setOnClickListener {
-            showMessage(it, "Here's a Snackbar")
+            openTaskListDetail(null)
         }
 
 
@@ -96,19 +128,24 @@ class TaskListActivity : AppCompatActivity() {
         return true
     }
 
-    private fun openTaskDetailView(task: Task) {
+    private fun onListItemClicked(task: Task) {
+        openTaskListDetail(task)
+
+    }
+
+    private fun openTaskListDetail(task: Task?=null) {
         val intent = TaskDetailActivity.start(this, task)
         startForResult.launch(intent)
 
     }
 }
-sealed class ActionType : Serializable {
-    object DELETE : ActionType()
-    object UPDATE : ActionType()
-    object CREATE : ActionType()
+enum class ActionType {
+    DELETE,
+    UPDATE,
+    CREATE
 }
 data class TaskAction(
     val task: Task,
-    val actionType: ActionType
+    val actionType: String
 ) : Serializable
 const val TASK_ACTION_RESULT = "TASK_ACTION_RESULT"
