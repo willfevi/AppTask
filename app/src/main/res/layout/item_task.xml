@@ -14,17 +14,17 @@
         android:id="@+id/text_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         tools:text="Title name"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="22sp"
+        style="@style/Titles"
         />
     <TextView
         android:id="@+id/text_view_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         tools:text="This is an example of the description!"
-        android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:textColor="@color/grey_900"
+        android:textSize="16sp"/>
 
 </LinearLayout>

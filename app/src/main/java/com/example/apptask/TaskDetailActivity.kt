@@ -3,7 +3,6 @@ package com.example.apptask
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,9 +10,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import java.io.Serializable
 
 class TaskDetailActivity : AppCompatActivity() {
 
@@ -84,30 +82,32 @@ class TaskDetailActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_task_detail, menu)
         return true
     }
+    private fun returnAction(task: Task, actionType: ActionType) {
+        val intent = Intent().apply {
+            val taskAction = TaskAction(task, actionType)
+            putExtra(TASK_ACTION_RESULT, taskAction)
+        }
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_task -> {
-                if(task!=null) {
-                    returnAction(task!!,ActionType.DELETE)
-                }else{
-                    showMessage(btnTask,"Nenhum item para deletar!")
+                if (task != null) {
+                    returnAction(task!!, ActionType.DELETE)
+                } else {
+                    showMessage(btnTask, "Nenhum item para deletar!")
                 }
+                true
+            }
+            android.R.id.home -> { // Tratamento do botão "Voltar" ou "Cancelar"
+                setResult(Activity.RESULT_CANCELED)
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun returnAction(task: Task,actionType:ActionType){
-        val intent=Intent()
-            .apply {
-                val taskAction = TaskAction(task, actionType.name)
-                putExtra(TASK_ACTION_RESULT, taskAction)
-            }
-        setResult(Activity.RESULT_OK,intent)
-        finish()
-
     }
 
 

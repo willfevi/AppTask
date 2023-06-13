@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pink_100">#FFFFD8DC</color>
-    <color name="pink_300">#FFF5ABAC</color>
-    <color name="pink_500">#fff2898a</color>
-    <color name="brown_900">#FF442C2E</color>
-    <color name="brown_700">#FF654544</color>
+    <color name="yellow">#E18218</color>
+    <color name="blue_100">#60bcff</color>
+    <color name="blue_300">#228EFF</color>
+    <color name="blue_500">#287BF9</color>
+    <color name="grey_900">#575A60</color>
+    <color name="grey_700">#B3B6Bc</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -10,9 +10,7 @@
 
     <TextView
         android:text="Title:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/brown_900"
+        style="@style/Titles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -29,9 +27,7 @@
 
     <TextView
         android:text="Description:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/brown_900"
+        style="@style/Titles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -47,8 +43,17 @@
    <Button
        android:id="@+id/btn_task"
        android:text="concluir"
+       android:textColor="@color/white"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginTop="8dp"/>
-
+       android:layout_marginTop="48dp"
+       android:background="@drawable/textview_background"
+       style="@style/Titles"/>
+    <ImageView
+        android:id="@+id/img_up"
+        android:src="@drawable/img_update"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
 </LinearLayout>
